@@ -1,19 +1,22 @@
-import { Metadata } from "next";
-
+"use client";
+import { use } from "next";
+import { useRouter } from "next/navigation";
 type Props = {
   params: Promise<{ productId: string }>;
 };
 
-export const generateMetadata = async ({
-  params,
-}: Props): Promise<Metadata> => {
-  const id = (await params).productId;
-  return {
-    title: `${id}`,
-  };
-};
-export default async function ProductIds({ params }: Props) {
-  const prodId = (await params).productId;
+export default function ProductIds({ params }: Props) {
+  const prodId = use(params).productId;
+  const router = useRouter();
 
-  return <h1>Product Id: {prodId}</h1>;
+  const handleClick = () => {
+    router.push(`/product/${prodId}`);
+  };
+
+  return (
+    <>
+      <h1>Product Id: {prodId}</h1>
+      <button onClick={handleClick}>Product click</button>
+    </>
+  );
 }
